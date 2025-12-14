@@ -390,7 +390,8 @@ input[readonly] {
         <div class="factLine"><span>Números:</span><span id="rNums">Al azar</span></div>
     </div>
 
-    <div class="btn" onclick="go(5)">CONTINUAR</div>
+    <div class="btn" onclick="fillFormData(); go(5)">CONTINUAR</div>
+
 </div>
 
 
@@ -442,6 +443,9 @@ input[readonly] {
 
         <input type="hidden" name="_subject" value="Nueva Reserva Super Sorteos">
         <input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_next" value="https://antoniojocevegames.github.io/app-supersorteos/gracias.html">
+
 
     </form>
 </div>
@@ -535,9 +539,13 @@ function validatePay(){
 function digits(i){ i.value=i.value.replace(/[^0-9]/g,""); }
 
 /* Cargar totales al formulario */
-document.getElementById("formCant").value=count;
-document.getElementById("formUsd").value=count+" USD";
-document.getElementById("formBs").value=(count*100)+" Bs";
+function fillFormData(){
+    document.getElementById("formCant").value = count;
+    document.getElementById("formUsd").value = count + " USD";
+    document.getElementById("formBs").value = (count * 100) + " Bs";
+    document.getElementById("formMetodo").value = method;
+}
+
 
 </script>
 
