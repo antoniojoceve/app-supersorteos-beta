@@ -3,33 +3,242 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500&family=Monoton&display=swap" rel="stylesheet">
+
 <style>
+*{box-sizing:border-box}
 body{
+  margin:0;
   background:#E5D8BD;
   font-family:'Rubik',sans-serif;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-  height:100vh;
-  text-align:center
+  color:#3A2E2E
 }
-.card{
-  background:#fff;
-  padding:40px;
-  border-radius:16px;
+#app{max-width:480px;margin:auto}
+.screen{display:none;opacity:0;transition:.3s;padding:28px;position:relative}
+.active{display:block;opacity:1}
+.title{font-family:'Monoton';font-size:32px;color:#C60000;text-align:center}
+.subtitle{font-family:'Rubik';font-size:16px;text-align:center;margin-bottom:20px}
+.btn{
+  width:100%;padding:16px;border-radius:12px;
+  background:#3A2E2E;color:#fff;font-size:16px;
+  border:none;font-weight:600;cursor:pointer
+}
+.btn:active{transform:scale(.97)}
+.back{
+  position:absolute;top:15px;left:15px;
+  background:#6A7A8A;color:#fff;
+  padding:6px 12px;border-radius:8px;
+  cursor:pointer
+}
+.accordion,.panel{
+  background:#fff;border-radius:12px;
+  border:2px solid #3A2E2E;padding:15px
+}
+.panel{display:none;margin-top:10px}
+.counterRow{display:flex;justify-content:center;gap:14px;margin-top:20px}
+.counterBtn,.resetBtn{
+  width:52px;height:52px;border-radius:12px;
   border:2px solid #3A2E2E;
-  max-width:420px
+  display:flex;align-items:center;justify-content:center;
+  font-size:26px;cursor:pointer
 }
-h1{font-family:'Monoton';color:#C60000}
+.counterBtn{background:#C60000;color:#fff}
+.resetBtn{background:#7A7A7A;color:#fff}
+.counterNum{font-family:'Monoton';font-size:42px;color:#C60000}
+.payCard{
+  background:#fff;border-radius:12px;
+  border:2px solid #3A2E2E;
+  padding:14px;margin-bottom:12px;
+  display:flex;gap:14px;cursor:pointer
+}
+.payCard.selected{background:#EFE7D2;border-color:#C60000}
+.payIcon{
+  width:56px;height:56px;border-radius:10px;
+  background:#C60000;color:#fff;
+  font-family:'Monoton';
+  display:flex;align-items:center;justify-content:center
+}
+.copyBtn{
+  background:#6A7A8A;color:#fff;
+  padding:14px;border-radius:10px;
+  text-align:center;cursor:pointer
+}
+.factura{
+  background:#fff;border-radius:12px;
+  border:2px solid #3A2E2E;padding:18px
+}
+.factLine{display:flex;justify-content:space-between;margin-bottom:10px}
+label{font-weight:500}
+input,textarea{
+  width:100%;padding:12px;border-radius:10px;
+  border:2px solid #3A2E2E;margin-bottom:14px
+}
+input[readonly]{background:#EFE7D2}
 </style>
 </head>
+
 <body>
-<div class="card">
-<h1>Pago recibido</h1>
-<p>Hemos recibido tu solicitud correctamente.</p>
-<p>Tu pago será validado y recibirás tus números por correo.</p>
-<p><b>Gracias por participar.</b></p>
+<div id="app">
+
+<!-- PANTALLA 1 -->
+<div id="s1" class="screen active">
+  <h1 class="title">IMPORTANTE</h1>
+  <p class="subtitle">Leer antes de continuar</p>
+
+  <div class="accordion" onclick="toggleTerms()">Ver términos y condiciones</div>
+  <div id="terms" class="panel">
+    <p>• Cada número cuesta 1 USD (mínimo 3).</p>
+    <p>• La asignación se hace tras verificar el pago.</p>
+    <p>• El sorteo es semanal.</p>
+    <p>• El premio se entrega por transferencia.</p>
+  </div>
+
+  <label><input type="checkbox" id="chkT"> Acepto los términos</label>
+  <div id="btn1" class="btn" style="opacity:.4">CONTINUAR</div>
 </div>
+
+<!-- PANTALLA 2 -->
+<div id="s2" class="screen">
+  <div class="back" onclick="go(1)">←</div>
+  <h1 class="title">Asignación</h1>
+  <p class="subtitle">Elige la cantidad de tickets</p>
+
+  <div class="counterRow">
+    <div class="resetBtn" onclick="resetCount()">⟳</div>
+    <div class="counterBtn" onclick="sub()">−</div>
+    <div class="counterNum" id="count">3</div>
+    <div class="counterBtn" onclick="add()">+</div>
+  </div>
+
+  <p class="subtitle" id="totals">Total: 3 USD | 300 Bs</p>
+  <div class="btn" onclick="go(3)">ESCOGER MÉTODO DE PAGO</div>
+</div>
+
+<!-- PANTALLA 3 -->
+<div id="s3" class="screen">
+  <div class="back" onclick="go(2)">←</div>
+  <h1 class="title">Pago</h1>
+
+  <div class="payCard" onclick="selectPay('Pago Móvil')"><div class="payIcon">P</div>Pago Móvil</div>
+  <div class="payCard" onclick="selectPay('Zelle')"><div class="payIcon">Z</div>Zelle</div>
+  <div class="payCard" onclick="selectPay('Binance')"><div class="payIcon">B</div>Binance</div>
+  <div class="payCard" onclick="selectPay('PayPal')"><div class="payIcon">PP</div>PayPal</div>
+
+  <p class="subtitle" id="payTotals"></p>
+  <div class="btn" onclick="go(4)">CONTINUAR</div>
+</div>
+
+<!-- PANTALLA 4 -->
+<div id="s4" class="screen">
+  <div class="back" onclick="go(3)">←</div>
+  <h1 class="title">Resumen</h1>
+
+  <div class="factura">
+    <div class="factLine"><span>Método</span><span id="rMetodo"></span></div>
+    <div class="factLine"><span>Tickets</span><span id="rCant"></span></div>
+    <div class="factLine"><span>Total USD</span><span id="rUsd"></span></div>
+    <div class="factLine"><span>Total Bs</span><span id="rBs"></span></div>
+  </div>
+
+  <div class="btn" onclick="fillForm();go(5)">CONTINUAR</div>
+</div>
+
+<!-- PANTALLA 5 -->
+<div id="s5" class="screen">
+  <div class="back" onclick="go(4)">←</div>
+  <h1 class="title">Confirmar</h1>
+
+<form
+ action="https://formsubmit.co/antoniojoceve@gmail.com"
+ method="POST"
+ enctype="multipart/form-data">
+
+<input type="hidden" name="_captcha" value="false">
+<input type="hidden" name="_template" value="table">
+<input type="hidden" name="_subject" value="Nueva reserva – Super Sorteos">
+<input type="hidden" name="_next" value="https://antoniojocevegames.github.io/app-supersorteos/gracias.html">
+
+<label>Nombre</label>
+<input name="Cliente" required>
+
+<label>Teléfono</label>
+<input name="Telefono" required>
+
+<label>Correo</label>
+<input type="email" name="Correo" required>
+
+<label>Números o “Al azar”</label>
+<input name="Numeros">
+
+<label>Cantidad</label>
+<input id="fCant" name="Cantidad" readonly>
+
+<label>Total USD</label>
+<input id="fUsd" name="Total_USD" readonly>
+
+<label>Total Bs</label>
+<input id="fBs" name="Total_BS" readonly>
+
+<label>Método</label>
+<input id="fMetodo" name="Metodo" readonly>
+
+<label>Referencia</label>
+<input name="Referencia" required>
+
+<label>Captura del pago</label>
+<input type="file" name="Captura" accept="image/*" required>
+
+<label>Mensaje</label>
+<textarea name="Mensaje"></textarea>
+
+<button class="btn">CONFIRMAR PAGO</button>
+</form>
+</div>
+
+</div>
+
+<script>
+let count=3,method='';
+function go(n){
+ document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+ document.getElementById('s'+n).classList.add('active')
+}
+function toggleTerms(){
+ let t=document.getElementById('terms');
+ t.style.display=t.style.display==='block'?'none':'block'
+}
+document.getElementById('chkT').onchange=e=>{
+ let b=document.getElementById('btn1');
+ if(e.target.checked){b.style.opacity=1;b.onclick=()=>go(2)}
+ else{b.style.opacity=.4;b.onclick=null}
+}
+function add(){count++;upd()}
+function sub(){if(count>3)count--;upd()}
+function resetCount(){count=3;upd()}
+function upd(){
+ document.getElementById('count').innerText=count;
+ document.getElementById('totals').innerText=`Total: ${count} USD | ${count*100} Bs`;
+ document.getElementById('payTotals').innerText=`Total: ${count} USD | ${count*100} Bs`
+}
+function selectPay(m){
+ method=m;
+ document.querySelectorAll('.payCard').forEach(c=>c.classList.remove('selected'));
+ event.currentTarget.classList.add('selected');
+ document.getElementById('rMetodo').innerText=method;
+ document.getElementById('rCant').innerText=count;
+ document.getElementById('rUsd').innerText=count+' USD';
+ document.getElementById('rBs').innerText=count*100+' Bs';
+}
+function fillForm(){
+ fCant.value=count;
+ fUsd.value=count+' USD';
+ fBs.value=count*100+' Bs';
+ fMetodo.value=method;
+}
+upd()
+</script>
+
 </body>
 </html>
+
