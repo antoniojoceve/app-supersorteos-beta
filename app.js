@@ -111,7 +111,10 @@ document.getElementById("rOrder").innerText = orderID;
 
 function validatePay(){
     if(!method){ alert("Seleccione un método de pago"); return; }
-
+    if(!orderID){
+    orderID = generateOrderID();
+}
+    document.getElementById("rOrder").innerText = orderID;
     document.getElementById("rMetodo").innerText = method;
     document.getElementById("rCant").innerText = count;
     document.getElementById("rUsd").innerText = (count * PRICE_USD) + " USD";
@@ -152,6 +155,7 @@ function generateOrderID(){
 
     return `${prefix}-${y}${m}${d}-${rnd}`;
 }
+
 
 
 
