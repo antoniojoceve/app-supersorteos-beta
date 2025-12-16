@@ -198,6 +198,11 @@ function fillFormData(){
     document.getElementById("formBs").value  = (count * RATE_BS) + " Bs";
     document.getElementById("formMetodo").value = method;
     document.getElementById("formNums").value = buildNumbersDisplay();
+    localStorage.setItem("orderID", orderID);
+    localStorage.setItem("metodo", method);
+    localStorage.setItem("numeros", buildNumbersDisplay());
+    localStorage.setItem("total", `${count * PRICE_USD} USD | ${count * RATE_BS} Bs`);
+
 
 }
 
