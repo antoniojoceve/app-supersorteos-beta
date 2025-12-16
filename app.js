@@ -1,7 +1,6 @@
 let count = 3;
 let method = "";
 let copyTxt = "";
-let selectedNumbers = "";
 let orderID = "";
 const PRICE_USD = 1;
 const RATE_BS = 320; // ⬅️ SOLO CAMBIAS ESTO CADA SEMANA
@@ -87,66 +86,6 @@ function resetCount(){
     updateNumbersLimit();
 }
 
-
-function handleNumbersInput(input){
-    const maxDigits = count * 4;
-
-    // 🔒 bloquear físicamente el input
-    input.maxLength = maxDigits + Math.floor(maxDigits / 4);
-
-    // solo números
-    let raw = input.value.replace(/\D/g, "");
-
-    // cortar de verdad
-    if(raw.length > maxDigits){
-        raw = raw.slice(0, maxDigits);
-    }
-
-    selectedNumbers = raw;
-
-    // formato visual 4 en 4
-    input.value = raw.replace(/(.{4})/g, "$1 ").trim();
-}
-
-function updateNumbersLimit(){
-    const input = document.getElementById("numsInput");
-    if(!input) return;
-    handleNumbersInput(input);
-}
-
-function trimNumbersToLimit(){
-    const input = document.getElementById("numsInput");
-    if(!input) return;
-
-    const maxDigits = count * 4;
-
-    let raw = selectedNumbers.replace(/\D/g,"");
-
-    if(raw.length > maxDigits){
-        raw = raw.slice(0, maxDigits);
-    }
-
-    selectedNumbers = raw;
-    input.value = raw.replace(/(.{4})/g, "$1 ").trim();
-}
-
-function buildNumbersDisplay(){
-    const blocks = [];
-    const maxBlocks = count;
-    const raw = selectedNumbers || "";
-
-    for(let i = 0; i < maxBlocks; i++){
-        const chunk = raw.slice(i*4, i*4 + 4);
-        if(chunk.length === 4){
-            blocks.push(chunk);
-        } else {
-            blocks.push("Al azar");
-        }
-    }
-
-    return blocks.join(" | ");
-}
-
 function selectPay(name, id){
     method = name;
 
@@ -180,7 +119,6 @@ function validatePay(){
     document.getElementById("rCant").innerText = count;
     document.getElementById("rUsd").innerText = (count * PRICE_USD) + " USD";
     document.getElementById("rBs").innerText  = (count * RATE_BS) + " Bs";    
-    document.getElementById("rNums").innerText = buildNumbersDisplay();
 
     go(4);
 }
@@ -197,12 +135,10 @@ function fillFormData(){
     document.getElementById("formUsd").value = (count * PRICE_USD) + " USD";
     document.getElementById("formBs").value  = (count * RATE_BS) + " Bs";
     document.getElementById("formMetodo").value = method;
-    document.getElementById("formNums").value = buildNumbersDisplay();
     localStorage.setItem("orderID", orderID);
     localStorage.setItem("metodo", method);
-    localStorage.setItem("numeros", buildNumbersDisplay());
     localStorage.setItem("total", `${count * PRICE_USD} USD | ${count * RATE_BS} Bs`);
-
+    localStorage.setItem("tickets", count);
 
 }
 
@@ -220,3 +156,4 @@ function generateOrderID(){
 
     return `${prefix}-${y}${m}${d}-${rnd}`;
 }
+
