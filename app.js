@@ -166,11 +166,8 @@ fileInput.addEventListener("change", () => {
 
   const reader = new FileReader();
   reader.onload = function () {
-    // quitar: data:image/jpeg;base64,
     base64Input.value = reader.result.split(",")[1];
-    
-    console.log(base64Input.value.length);
-
+    console.log("Base64 length:", base64Input.value.length);
   };
 
   reader.readAsDataURL(file);
