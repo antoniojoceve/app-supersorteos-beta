@@ -169,7 +169,8 @@ fileInput.addEventListener("change", () => {
     // quitar: data:image/jpeg;base64,
     base64Input.value = reader.result.split(",")[1];
     
-    console.log(hiddenInput.value.length);
+    console.log(base64Input.value.length);
+
   };
 
   reader.readAsDataURL(file);
