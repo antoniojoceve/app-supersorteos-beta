@@ -161,31 +161,38 @@ document.getElementById("orderForm").addEventListener("submit", function(e){
     e.preventDefault();
 
     const payload = {
-        orderID: orderID,
-        nombre: this.Nombre.value,
-        telefono: this.Telefono.value,
-        email: this.email.value,
-        metodo: method,
-        tickets: count,
-        totalUSD: count * PRICE_USD,
-        totalBS: count * RATE_BS,
-        referencia: this.Referencia.value,
-        mensaje: this.Mensaje.value,
-        comprobante: "Adjunto manualmente"
-    };
+    orderID: orderID,
+    nombre: this.elements["Nombre"].value,
+    telefono: this.elements["Telefono"].value,
+    email: this.elements["email"].value,
+    metodo: method,
+    tickets: count,
+    totalUSD: count * PRICE_USD,
+    totalBS: count * RATE_BS,
+    referencia: this.elements["Referencia"].value,
+    mensaje: this.elements["Mensaje"].value || "",
+    comprobante: "Adjunto manualmente"
+};
 
     fetch(SHEET_URL, {
-        method: "POST",
-        body: JSON.stringify(payload),
-        headers: { "Content-Type": "application/json" }
+    method: "POST",
+    body: JSON.stringify(payload),
+    headers: { "Content-Type": "application/json" }
     })
-    .then(res => res.json())
-    .then(data => {
-        if(data.success){
-            window.location.href = "gracias.html";
-        } else {
-            alert("Error al registrar la orden");
-        }
+    .then(res => res.text()) // ⬅️ CLAVE
+    .then(text => {
+    console.log("RAW RESPONSE:", text);
+    const data = JSON.parse(text);
+
+    if(data.success){
+        window.location.href = "gracias.html";
+    } else {
+        alert("Error al registrar la orden");
+    }
     })
-    .catch(() => alert("Error de conexión"));
+    .catch(err => {
+    console.error("FETCH ERROR:", err);
+    alert("Error de conexión con Google Sheets");
+    });
+
 });
