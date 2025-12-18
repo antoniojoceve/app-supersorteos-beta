@@ -196,28 +196,29 @@ form.addEventListener("submit", function (e) {
   formData.append("source", "client");
 
   fetch(form.action, {
-    method: "POST",
-    body: formData
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        // 👉 REDIRECCIÓN AQUÍ (FRONTEND)
-        window.location.href =
-          `gracias.html?pdf=${encodeURIComponent(data.pdf)}`;
-      } else {
-        throw new Error("Respuesta inválida");
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Error enviando la orden. Intente nuevamente.");
+  method: "POST",
+  body: formData
+})
+  .then(res => res.text()) // 👈 CAMBIO CLAVE
+  .then(text => {
+    console.log("RAW RESPONSE:", text); // 👈 DEBUG REAL
+    const data = JSON.parse(text);
 
-      // 🔄 reactivar botón si falla
-      submitBtn.disabled = false;
-      submitBtn.innerText = "COMPRAR";
-      submitBtn.style.opacity = "1";
-      submitBtn.style.pointerEvents = "auto";
-      if (loader) loader.style.display = "none";
-    });
-});
+    if (!data.success) {
+      throw new Error(data.error || "Error desconocido");
+    }
+
+    // 👉 OK
+    window.location.href =
+      `gracias.html?pdf=${encodeURIComponent(data.pdf)}`;
+  })
+  .catch(err => {
+    console.error("FRONT ERROR:", err);
+    alert(err.message); // 👈 muestra error REAL
+
+    submitBtn.disabled = false;
+    submitBtn.innerText = "COMPRAR";
+    submitBtn.style.opacity = "1";
+    submitBtn.style.pointerEvents = "auto";
+    if (loader) loader.style.display = "none";
+  });
