@@ -196,29 +196,35 @@ form.addEventListener("submit", function (e) {
   formData.append("source", "client");
 
   fetch(form.action, {
-  method: "POST",
-  body: formData
-})
-  .then(res => res.text()) // 👈 CAMBIO CLAVE
-  .then(text => {
-    console.log("RAW RESPONSE:", text); // 👈 DEBUG REAL
-    const data = JSON.parse(text);
-
-    if (!data.success) {
-      throw new Error(data.error || "Error desconocido");
-    }
-
-    // 👉 OK
-    window.location.href =
-      `gracias.html?pdf=${encodeURIComponent(data.pdf)}`;
+    method: "POST",
+    body: formData
   })
-  .catch(err => {
-    console.error("FRONT ERROR:", err);
-    alert(err.message); // 👈 muestra error REAL
+    .then(res => res.text())
+    .then(text => {
+      console.log("RAW RESPONSE:", text);
 
-    submitBtn.disabled = false;
-    submitBtn.innerText = "COMPRAR";
-    submitBtn.style.opacity = "1";
-    submitBtn.style.pointerEvents = "auto";
-    if (loader) loader.style.display = "none";
-  });
+      let data;
+      try {
+        data = JSON.parse(text);
+      } catch (e) {
+        throw new Error("El servidor no devolvió JSON válido");
+      }
+
+      if (!data.success) {
+        throw new Error(data.error || "Error desde el backend");
+      }
+
+      window.location.href =
+        `gracias.html?pdf=${encodeURIComponent(data.pdf)}`;
+    })
+    .catch(err => {
+      console.error("FRONT ERROR:", err);
+      alert(err.message);
+
+      submitBtn.disabled = false;
+      submitBtn.innerText = "COMPRAR";
+      submitBtn.style.opacity = "1";
+      submitBtn.style.pointerEvents = "auto";
+      if (loader) loader.style.display = "none";
+    });
+});
