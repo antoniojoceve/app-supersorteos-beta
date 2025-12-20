@@ -1,6 +1,7 @@
 window.onload = () => {
   const params = new URLSearchParams(window.location.search);
-  const pdfUrl = params.get("pdf");
+  const pdfId = params.get("pdfId");
+
 
   console.log("PDF URL:", pdfUrl);
 
@@ -11,14 +12,20 @@ window.onload = () => {
     return;
   }
 
-  if (!pdfUrl) {
-    console.warn("⚠️ No llegó la URL del PDF");
-    return;
-  }
+  if (!pdfId) {
+  console.warn("⚠️ No llegó el ID del PDF");
+  return;
+}
+
 
   btn.style.display = "inline-block";
 
   btn.onclick = () => {
-    window.open(decodeURIComponent(pdfUrl), "_blank");
-  };
+  const downloadUrl =
+    "https://script.google.com/macros/s/AKfycbzAyxS9xOHd0xA4ks5rN3u9Ka_vDej4V79l5zP7e2xQL1mVVtGz5ph_8QZKiEfHbG7M/exec?download=" +
+    encodeURIComponent(pdfId);
+
+  window.location.href = downloadUrl;
+};
+
 };

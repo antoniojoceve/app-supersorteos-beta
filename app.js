@@ -215,7 +215,8 @@ form.addEventListener("submit", function (e) {
       }
 
       window.location.href =
-        `gracias.html?pdf=${encodeURIComponent(data.pdf)}`;
+  `gracias.html?pdfId=${encodeURIComponent(data.pdfId)}`;
+
     })
     .catch(err => {
       console.error("FRONT ERROR:", err);
