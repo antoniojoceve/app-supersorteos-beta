@@ -191,6 +191,8 @@ form.addEventListener("submit", function (e) {
 
   // 📦 construir FormData
   const formData = new FormData(form);
+  
+  formData.append("token", Date.now());
 
   // 🔑 flag para el backend
   formData.append("source", "client");
