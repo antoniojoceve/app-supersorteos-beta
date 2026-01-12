@@ -31,6 +31,10 @@ const paymentMethods = {
 function go(n){
     document.querySelectorAll(".screen").forEach(s => s.classList.remove("active"));
     document.getElementById("s"+n).classList.add("active");
+
+    if(n === 2 || n === 3){
+        updateTotals();
+    }
 }
 
 function toggleTerms(){
@@ -234,3 +238,5 @@ form.addEventListener("submit", function (e) {
       if (loader) loader.style.display = "none";
     });
 });
+
+document.addEventListener("DOMContentLoaded", updateTotals);
