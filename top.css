@@ -1,42 +1,73 @@
 body {
-      font-family: Arial, sans-serif;
-      background: #0f172a;
-      color: #fff;
-      padding: 20px;
-    }
+  margin: 0;
+  padding: 20px;
+  font-family: 'Rubik', sans-serif;
+  background: #E5D8BD;
+  color: #3A2E2E;
+}
 
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
-    }
+h2 {
+  text-align: center;
+  font-family: 'Monoton', cursive;
+  color: #C60000;
+  margin-bottom: 20px;
+}
 
-    table {
-      width: 100%;
-      border-collapse: collapse;
-      background: #020617;
-      border-radius: 8px;
-      overflow: hidden;
-    }
+/* CONTENEDOR */
+table {
+  width: 100%;
+  border-collapse: collapse;
+  background: #FFFFFF;
+  border-radius: 14px;
+  border: 2px solid #3A2E2E;
+  box-shadow: 0 6px 0 #3A2E2E;
+  overflow: hidden;
+}
 
-    th, td {
-      padding: 12px;
-      text-align: left;
-    }
+/* CABECERA */
+thead {
+  background: #EFE7D2;
+}
 
-    th {
-      background: #1e293b;
-      font-weight: bold;
-    }
+th {
+  padding: 12px;
+  font-size: 16px;
+  text-align: left;
+  color: #6A7A8A;
+  border-bottom: 2px solid #3A2E2E;
+}
 
-    tr:nth-child(even) {
-      background: #020617;
-    }
+/* FILAS */
+td {
+  padding: 12px;
+  font-size: 16px;
+  border-bottom: 1px dashed #CBBFA5;
+}
 
-    tr:nth-child(odd) {
-      background: #020617;
-    }
+tr:last-child td {
+  border-bottom: none;
+}
 
-    .rank {
-      font-weight: bold;
-      color: gold;
-    }
+/* RANK */
+.rank {
+  font-weight: 900;
+  color: #C60000;
+}
+
+/* TOP 1 DESTACADO */
+tr:nth-child(1) .rank {
+  color: #C60000;
+  font-size: 18px;
+}
+
+tr:nth-child(1) td {
+  background: #FBEAEA;
+}
+
+/* RESPONSIVE */
+@media (max-width: 480px) {
+  th, td {
+    font-size: 14px;
+    padding: 10px;
+  }
+}
