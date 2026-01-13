@@ -1,6 +1,7 @@
-const API_URL = "https://script.google.com/macros/s/AKfycbzLz5X6sz-7v41YK-aNnl1mnBrZbUUM121uqFNNWjOPpqV09L_r_EropNCEYhdULzKplw/exec?action=top&callback=renderTop";
+const API_URL =
+  "https://script.google.com/macros/s/AKfycbzLz5X6sz-7v41YK-aNnl1mnBrZbUUM121uqFNNWjOPpqV09L_r_EropNCEYhdULzKplw/exec?action=top&callback=renderTop";
 
-function renderTop(data) {
+window.renderTop = function (data) {
   const body = document.getElementById("topBody");
   body.innerHTML = "";
 
@@ -23,7 +24,7 @@ function renderTop(data) {
       `;
       body.appendChild(tr);
     });
-}
+};
 
 // 🔄 REFRESH SIN RECARGAR
 function refreshTop() {
