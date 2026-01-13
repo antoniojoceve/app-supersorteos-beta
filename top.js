@@ -1,8 +1,11 @@
 const API_URL =
   "https://script.google.com/macros/s/AKfycbzLz5X6sz-7v41YK-aNnl1mnBrZbUUM121uqFNNWjOPpqV09L_r_EropNCEYhdULzKplw/exec?action=top&callback=renderTop";
 
+// 👉 JSONP callback (DEBE ser global)
 window.renderTop = function (data) {
   const body = document.getElementById("topBody");
+  if (!body) return;
+
   body.innerHTML = "";
 
   const lista = Array.isArray(data) ? data : data.usuarios;
@@ -16,29 +19,29 @@ window.renderTop = function (data) {
     .sort((a, b) => b.tickets - a.tickets)
     .slice(0, 5) // 🏆 TOP 5
     .forEach((u, i) => {
-      const tr = document.createElement("tr");
-      tr.innerHTML = `
-        <td class="rank">${i + 1}</td>
-        <td>${u.nombre.split(" ")[0]} ⭐</td>
-        <td>${u.tickets}</td>
+      body.innerHTML += `
+        <tr>
+          <td class="rank">${i + 1}</td>
+          <td>${u.nombre.split(" ")[0]} ⭐</td>
+          <td>${u.tickets}</td>
+        </tr>
       `;
-      body.appendChild(tr);
     });
 };
 
-// 🔄 REFRESH SIN RECARGAR
+// 🔄 Carga / refresco JSONP
 function refreshTop() {
-  const oldScript = document.getElementById("jsonpTop");
-  if (oldScript) oldScript.remove();
+  const old = document.getElementById("jsonpTop");
+  if (old) old.remove();
 
-  const script = document.createElement("script");
-  script.id = "jsonpTop";
-  script.src = API_URL + "&_ts=" + Date.now(); // evita cache
-  document.body.appendChild(script);
+  const s = document.createElement("script");
+  s.id = "jsonpTop";
+  s.src = API_URL + "&_ts=" + Date.now(); // evita cache
+  document.body.appendChild(s);
 }
 
-// ⏱ Primera carga
-refreshTop();
-
-// 🔁 Cada 30 segundos
-setInterval(refreshTop, 30000);
+// ⏱ Arranque seguro (DOM listo)
+document.addEventListener("DOMContentLoaded", () => {
+  refreshTop();
+  setInterval(refreshTop, 30000);
+});
