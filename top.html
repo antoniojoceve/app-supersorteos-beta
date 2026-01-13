@@ -3,31 +3,30 @@
 <head>
   <meta charset="UTF-8">
   <title>Top compradores</title>
-  <link rel="stylesheet" href="top.css?v=2">
+  <link rel="stylesheet" href="top.css">
 </head>
-
 <body>
 
-  <h2>🔥 Top compradores</h2>
+<h2>🔥 Top compradores</h2>
 
-  <table>
-    <thead>
-      <tr>
-        <th>#</th>
-        <th>Nombre</th>
-        <th>Tickets</th>
-      </tr>
-    </thead>
-    <tbody id="topBody">
-      <tr><td colspan="3">Cargando…</td></tr>
-    </tbody>
-  </table>
+<table>
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Nombre</th>
+      <th>Tickets</th>
+    </tr>
+  </thead>
+  <tbody id="topBody">
+    <tr><td colspan="3">Cargando…</td></tr>
+  </tbody>
+</table>
 
-  <!-- JS principal -->
-  <script src="top.js?v=20260112"></script>
+<!-- 1️⃣ DEFINE LA FUNCIÓN -->
+<script src="top.js"></script>
 
-  <!-- JSONP (ESTO ES CLAVE) -->
-  <script src="https://script.google.com/macros/s/AKfycbzLz5X6sz-7v41YK-aNnl1mnBrZbUUM121uqFNNWjOPpqV09L_r_EropNCEYhdULzKplw/exec?action=top&callback=renderTop"></script>
+<!-- 2️⃣ GOOGLE LA LLAMA -->
+<script src="https://script.google.com/macros/s/AKfycbzLz5X6sz-7v41YK-aNnl1mnBrZbUUM121uqFNNWjOPpqV09L_r_EropNCEYhdULzKplw/exec?action=top&callback=renderTop"></script>
 
 </body>
 </html>
