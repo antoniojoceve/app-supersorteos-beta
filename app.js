@@ -3,7 +3,7 @@ let method = "";
 let copyTxt = "";
 let orderID = "";
 const PRICE_USD = 1;
-const RATE_BS = 345; // ⬅️ SOLO CAMBIAS ESTO CADA SEMANA
+const RATE_BS = 630; // ⬅️ SOLO CAMBIAS ESTO CADA SEMANA
 
 const paymentMethods = {
     "Pago Móvil": {
@@ -240,3 +240,4 @@ form.addEventListener("submit", function (e) {
 });
 
 document.addEventListener("DOMContentLoaded", updateTotals);
+
